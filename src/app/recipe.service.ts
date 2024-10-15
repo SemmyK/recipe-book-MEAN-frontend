@@ -44,10 +44,16 @@ export class RecipeService {
   }
 
   createRecipe(recipe: Recipe): Observable<any> {
+    const hardcodedUserId = '64df68b9ca509d1bf885d51f';
     return this.httpClient
       .post(
         this.url,
-        { ...recipe, createdAt: new Date(), updatedAt: new Date() },
+        {
+          ...recipe,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          user: hardcodedUserId,
+        },
         { responseType: 'text' }
       )
       .pipe(
