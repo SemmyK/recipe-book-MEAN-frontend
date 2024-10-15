@@ -1,0 +1,22 @@
+<main>
+  <app-recipe-filter
+    [currentFilter]="currentFilter()"
+    (filterChange)="changeFilter($event)"
+  ></app-recipe-filter>
+
+  <app-loading-page
+    *ngIf="loading() && recipes.length === 0"
+    type="ball-scale"
+    size="medium"
+  ></app-loading-page>
+
+  <app-recipe-list
+    *ngIf="recipes.length > 0; else noRecipes"
+    [recipes]="filteredRecipes"
+  ></app-recipe-list>
+  <ng-template #noRecipes>
+    <p>No recipes available. Please check back later.</p>
+  </ng-template>
+
+  <app-recipe-list [recipes]="filteredRecipes"></app-recipe-list>
+</main>

@@ -1,0 +1,9 @@
+#singleRecipe {
+  width: 95vw;
+  margin: auto;
+}
+
+#singleRecipe li {
+  list-style-image: url("/assets/icons/food.svg") !important;
+  padding-inline-start: 5px;
+}

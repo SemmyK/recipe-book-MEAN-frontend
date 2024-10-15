@@ -1,0 +1,56 @@
+@use "@angular/material" as mat;
+
+@include mat.core();
+
+$frontend-theme: mat.define-theme(
+  (
+    color: (
+      theme-type: light,
+      primary: mat.$azure-palette,
+      tertiary: mat.$blue-palette,
+    ),
+    density: (
+      scale: 0,
+    ),
+  )
+);
+
+:root {
+  @include mat.all-component-themes($frontend-theme);
+}
+
+.mat-snack-bar-container {
+  border: none;
+  background-color: transparent;
+  bottom: auto !important;
+  padding: 0;
+  margin-top: 3em !important;
+  border-width: 0;
+  width: fit-content;
+  top: 5% !important;
+  border-radius: 0.5rem !important;
+}
+
+.mdc-snackbar__surface {
+  top: 5%;
+  padding: 0 !important;
+  border-width: 0;
+  margin-top: 1.7em !important;
+  border-radius: 0.5rem !important;
+}
+.mdc-snackbar__surface div:first-child {
+  top: 5%;
+  padding: 0;
+  border-width: 0;
+}
+
+.success {
+  border: none;
+  background-color: rgb(114, 249, 114) !important;
+}
+
+.error {
+  border: none;
+  background-color: rgb(250, 96, 106) !important;
+  color: white;
+}

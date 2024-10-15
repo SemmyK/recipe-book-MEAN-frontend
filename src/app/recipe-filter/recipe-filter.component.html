@@ -1,0 +1,19 @@
+<div class="project-filter">
+  <div class="flex justify-center items-center my-4 text-white font-bold">
+    <div class="w-full sm:w-3/4 md:w-5/6">
+      <div class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-4">
+        <button
+          *ngFor="let filter of filterList"
+          (click)="onFilterChange(filter)"
+          class="py-2 px-4 rounded-lg text-white font-bold hover:bg-green-900"
+          [ngClass]="{
+            'bg-green-900 text-whitefont-bold': currentFilter === filter,
+            'bg-green-700 text-white font-bold': currentFilter !== filter
+          }"
+        >
+          {{ filter }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

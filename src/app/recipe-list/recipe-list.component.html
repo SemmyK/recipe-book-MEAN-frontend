@@ -1,0 +1,7 @@
+<section
+  id="recipeList"
+  class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 px-10 py-5"
+>
+  @for (recipe of recipes; track recipe.title) {
+  <app-recipe-card [recipe]="recipe"></app-recipe-card>}
+</section>

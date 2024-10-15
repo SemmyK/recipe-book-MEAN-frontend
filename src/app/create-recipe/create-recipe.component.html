@@ -1,0 +1,132 @@
+<div
+  class="mx-auto w-2/3 glass-card rounded-lg py-8 px-4 mt-6 mb-4 bg-slate-200"
+  id="createRecipe"
+>
+  <h1 class="text-center text-nowrap font-bold text-2xl text-green-900">
+    Create Recipe Here
+  </h1>
+  <form
+    [formGroup]="recipeForm"
+    (ngSubmit)="submit()"
+    class="w-4/5 mx-auto mb-4"
+  >
+    <div class="flex flex-wrap -mx-3 my-2">
+      <div class="w-full px-3 md:mb-0">
+        <label
+          class="block tracking-wide text-green-900 text-base text-left font-bold mb-2"
+          for="title"
+        >
+          Recipe Title:
+        </label>
+        <input
+          type="text"
+          formControlName="title"
+          class="appearance-none block w-full bg-gray-200 text-green-900 border border-green-900 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-2"
+          required
+        />
+      </div>
+    </div>
+
+    <div class="flex flex-wrap -mx-3 my-2">
+      <div class="w-full md:w-1/2 px-3 md:mb-0">
+        <label
+          class="block tracking-wide text-green-900 text-base text-left font-bold mb-2"
+          for="type"
+        >
+          Type of Recipe:
+        </label>
+        <select
+          id="type"
+          formControlName="type"
+          class="block appearance-none w-full bg-gray-200 border border-green-900 text-green-900 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-2"
+        >
+          <option value="meal">Meal</option>
+          <option value="soup">Soup</option>
+          <option value="salad">Salad</option>
+          <option value="snack">Snack</option>
+          <option value="smoothie">Smoothie</option>
+          <option value="sauce">Sauce</option>
+          <option value="side">Side Dish</option>
+          <option value="dessert">Dessert</option>
+        </select>
+      </div>
+      <div class="w-full md:w-1/2 px-3">
+        <label
+          class="block tracking-wide text-green-900 text-base text-left font-bold mb-2"
+          for="cookingTime"
+        >
+          Cooking Time (minutes):
+        </label>
+        <input
+          type="number"
+          formControlName="cookingTime"
+          class="appearance-none block w-full bg-gray-200 text-green-900 border border-green-900 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-2"
+          required
+        />
+      </div>
+    </div>
+
+    <div class="flex min-w-full my-2">
+      <div class="w-full">
+        <label
+          class="block tracking-wide text-green-900 text-base text-left font-bold mb-2"
+        >
+          Ingredients (add one by one):
+        </label>
+        <div
+          class="flex flex-nowrap flex-row justify-between items-center mb-2 min-w-full"
+        >
+          <div class="w-9/12">
+            <input
+              type="text"
+              class="appearance-none block w-full bg-gray-200 text-green-900 border border-green-900 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-2"
+              [formControl]="ingredientControl"
+            />
+          </div>
+          <div class="w-3/12 text-right">
+            <button
+              type="button"
+              (click)="addIngredient()"
+              class="btn bg-green-900 text-white py-2 px-6 rounded-md"
+            >
+              Add
+            </button>
+          </div>
+        </div>
+        <div
+          class="mt-2 text-left"
+          *ngIf="ingredients() && ingredients().length !== 0"
+        >
+          <p>
+            Current ingredients:
+            <span *ngFor="let ing of ingredients()">{{ ing }} |</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-wrap -mx-3 my-2">
+      <div class="w-full px-3">
+        <label
+          class="block tracking-wide text-green-900 text-base text-left font-bold mb-2"
+          for="method"
+        >
+          Write the steps for cooking (separate each step with a full stop):
+        </label>
+        <textarea
+          rows="3"
+          formControlName="method"
+          class="appearance-none block w-full bg-gray-200 text-green-900 border border-green-900 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-2"
+          required
+        ></textarea>
+      </div>
+    </div>
+
+    <button
+      type="submit"
+      class="btn mx-auto bg-green-900 text-white py-2 px-4 rounded-md"
+    >
+      Add New Recipe
+    </button>
+  </form>
+</div>

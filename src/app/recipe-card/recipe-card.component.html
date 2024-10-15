@@ -1,0 +1,33 @@
+<div
+  class="glass-card bg-white/30 backdrop-blur-lg rounded-lg shadow-lg flex flex-col justify-between h-full"
+>
+  <h2
+    class="text-center text-2xl font-bold text-green-900 mt-4 w-full rounded-t-lg py-3 px-2"
+  >
+    {{ recipe.title }}
+  </h2>
+
+  <ul
+    class="flex flex-col justify-center align-middle pl-12 mt-2 mb-6"
+    id="recipeIngredients"
+  >
+    <li *ngFor="let ing of recipe.ingredients" class="list-none text-left">
+      {{ ing }}
+    </li>
+  </ul>
+
+  <p class="text-gray-800 mb-4 px-4">
+    {{ recipe.method && recipe.method.slice(0, 100) }}...
+  </p>
+
+  <footer class="text-sm text-gray-500 mb-6">
+    {{ recipe.cookingTime }} to make.
+  </footer>
+
+  <a
+    [routerLink]="['details', recipe._id]"
+    routerLinkActive="router-link-active"
+    class="block rounded-md bg-green-900 w-1/2 text-center mx-auto px-3 py-2 text-base font-medium text-white mb-6"
+    >Cook this</a
+  >
+</div>

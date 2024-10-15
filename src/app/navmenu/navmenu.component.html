@@ -1,0 +1,33 @@
+<nav class="bg-green-900 pl-2 pr-8">
+  <div
+    class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start"
+  >
+    <div class="flex flex-shrink-0 items-center"></div>
+    <div class="sm:ml-6 flex items-center justify-between w-full">
+      <div class="flex space-x-4 items-center justify-between w-full">
+        <a
+          routerLink="/"
+          routerLinkActive="text-white"
+          class="rounded-md px-3 py-2 text-sm font-medium text-green-200 hover:text-white flex items-center justify-between"
+          aria-current="page"
+        >
+          <img
+            class="h-8 w-auto block"
+            ngSrc="/assets/icons/burger1.png"
+            alt="Hamburger logo"
+            width="50"
+            height="50"
+          />
+          <h1 class="ml-2">Recipe Book</h1>
+        </a>
+        <a
+          routerLink="/create"
+          routerLinkActive="text-white"
+          class="rounded-md px-3 py-2 text-sm font-medium text-green-200 hover:bg-green-700 hover:text-white block"
+        >
+          Create Recipe
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
