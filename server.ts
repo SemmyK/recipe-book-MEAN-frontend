@@ -1,9 +1,11 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { CommonEngine } from '@angular/ssr';
-import express from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve } from 'node:path';
 import bootstrap from './src/main.server';
+import { createProxyMiddleware } from 'http-proxy-middleware';
+import { environment } from './src/environments/environment';
 
 export function app(): express.Express {
   const server = express();
@@ -16,19 +18,28 @@ export function app(): express.Express {
   server.set('view engine', 'html');
   server.set('views', browserDistFolder);
 
-  // Example Express Rest API endpoints
-  // server.get('/api/**', (req, res) => { });
+  const BACKEND_URL =
+    environment.BACKEND_URL || 'https://recipe-book-mean-backend.onrender.com';
+
+  server.use(
+    '/api',
+    createProxyMiddleware({
+      target: BACKEND_URL,
+      changeOrigin: true,
+    })
+  );
+
   // Serve static files from /browser
   server.get(
-    '**',
+    '*.*',
     express.static(browserDistFolder, {
       maxAge: '1y',
-      index: 'index.html',
+      index: false,
     })
   );
 
   // All regular routes use the Angular engine
-  server.get('**', (req, res, next) => {
+  server.get('**', (req: Request, res: Response, next: NextFunction) => {
     const { protocol, originalUrl, baseUrl, headers } = req;
 
     commonEngine
@@ -40,7 +51,16 @@ export function app(): express.Express {
         providers: [{ provide: APP_BASE_HREF, useValue: baseUrl }],
       })
       .then((html) => res.send(html))
-      .catch((err) => next(err));
+      .catch((err) => {
+        console.error('Rendering error:', err);
+        res.status(500).send('Internal Server Error');
+      });
+  });
+
+  // Global error handling middleware
+  server.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+    console.error('Server error:', err);
+    res.status(500).send('Something broke!');
   });
 
   return server;
@@ -49,7 +69,6 @@ export function app(): express.Express {
 function run(): void {
   const port = process.env['PORT'] || 4000;
 
-  // Start up the Node server
   const server = app();
   server.listen(port, () => {
     console.log(`Node Express server listening on http://localhost:${port}`);

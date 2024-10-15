@@ -16,11 +16,9 @@ export class RecipeService {
   constructor(private httpClient: HttpClient) {}
 
   private refreshRecipes() {
-    this.httpClient
-      .get<Recipe[]>(`${this.url}/api/recipes`)
-      .subscribe((recipes) => {
-        this.recipes$.set(recipes);
-      });
+    this.httpClient.get<Recipe[]>(`${this.url}`).subscribe((recipes) => {
+      this.recipes$.set(recipes);
+    });
   }
 
   getRecipes() {
@@ -29,18 +27,16 @@ export class RecipeService {
   }
 
   getRecipe(id: string) {
-    this.httpClient
-      .get<Recipe>(`${this.url}/api/recipes/${id}`)
-      .subscribe((recipe) => {
-        this.recipe$.set(recipe);
-        return this.recipe$();
-      });
+    this.httpClient.get<Recipe>(`${this.url}/${id}`).subscribe((recipe) => {
+      this.recipe$.set(recipe);
+      return this.recipe$();
+    });
   }
 
   createRecipe(recipe: Recipe): Observable<any> {
     return this.httpClient
       .post(
-        `${this.url}/api/recipes`,
+        `${this.url}`,
         {
           ...recipe,
           createdAt: new Date(),
@@ -58,7 +54,7 @@ export class RecipeService {
 
   updateRecipe(id: string, recipe: Recipe) {
     return this.httpClient.put(
-      `${this.url}/api/recipes/${id}`,
+      `${this.url}/${id}`,
       { ...recipe, updatedAt: new Date() },
       {
         responseType: 'text',
@@ -67,7 +63,7 @@ export class RecipeService {
   }
 
   deleteRecipe(id: string) {
-    return this.httpClient.delete(`${this.url}/api/recipes/${id}`, {
+    return this.httpClient.delete(`${this.url}/${id}`, {
       responseType: 'text',
     });
   }
