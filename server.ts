@@ -1,9 +1,6 @@
-import { APP_BASE_HREF } from '@angular/common';
-import { CommonEngine } from '@angular/ssr';
 import express, { NextFunction, Request, Response } from 'express';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve } from 'node:path';
-import bootstrap from './src/main.server';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import { environment } from './src/environments/environment';
 
@@ -11,50 +8,39 @@ export function app(): express.Express {
   const server = express();
   const serverDistFolder = dirname(fileURLToPath(import.meta.url));
   const browserDistFolder = resolve(serverDistFolder, '../browser');
-  const indexHtml = join(serverDistFolder, 'index.server.html');
 
-  const commonEngine = new CommonEngine();
-
-  server.set('view engine', 'html');
-  server.set('views', browserDistFolder);
-
+  // Define the backend API URL
   const BACKEND_URL =
-    environment.BACKEND_URL || 'https://recipe-book-mean-backend.onrender.com';
+    environment.BACKEND_URL ||
+    'https://recipe-book-mean-backend.onrender.com/api/recipes';
 
+  // Proxy middleware for API calls
   server.use(
     '/api',
     createProxyMiddleware({
       target: BACKEND_URL,
       changeOrigin: true,
+      pathRewrite: {
+        '^/api': '/api/recipes', // Ensures the /api prefix is maintained in requests
+      },
     })
   );
 
   // Serve static files from /browser
-  server.get(
-    '*.*',
+  server.use(
     express.static(browserDistFolder, {
       maxAge: '1y',
       index: false,
     })
   );
 
-  // All regular routes use the Angular engine
-  server.get('**', (req: Request, res: Response, next: NextFunction) => {
-    const { protocol, originalUrl, baseUrl, headers } = req;
+  // Serve the index.html file for all non-static requests
+  server.get('/*', (req: Request, res: Response) => {
+    res.sendFile(join(browserDistFolder, 'index.html'));
+  });
 
-    commonEngine
-      .render({
-        bootstrap,
-        documentFilePath: indexHtml,
-        url: `${protocol}://${headers.host}${originalUrl}`,
-        publicPath: browserDistFolder,
-        providers: [{ provide: APP_BASE_HREF, useValue: baseUrl }],
-      })
-      .then((html) => res.send(html))
-      .catch((err) => {
-        console.error('Rendering error:', err);
-        res.status(500).send('Internal Server Error');
-      });
+  server.get('/api/test', (req, res) => {
+    res.json({ message: 'API is working!' });
   });
 
   // Global error handling middleware

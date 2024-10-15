@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  BACKEND_URL: 'https://recipe-book-mean-backend.onrender.com/api/recipes',
+  BACKEND_URL: 'http://localhost:5200/api/recipes',
 };
