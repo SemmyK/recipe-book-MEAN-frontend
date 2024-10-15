@@ -41,6 +41,7 @@ export class CreateRecipeComponent {
 
   onFormSubmitted(formValues: any) {
     this.openSnackBar('Successfully added recipe.', 'Close', 'success');
+    this.recipeService.getRecipes();
     this.router.navigate(['/']);
   }
 
