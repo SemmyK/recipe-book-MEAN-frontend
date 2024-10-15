@@ -22,11 +22,14 @@ export class RecipeDetailsComponent {
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
+
     if (!id) {
       alert('No id provided');
     }
     this.loading.set(true);
-    this.singleRecipeService.getRecipe(id!);
+    this.singleRecipeService.getRecipe(id!).subscribe((recipe) => {
+      this.recipe$.set(recipe!);
+    });
     this.recipe$ = this.singleRecipeService.recipe$;
 
     setTimeout(() => {
