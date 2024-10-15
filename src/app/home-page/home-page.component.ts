@@ -6,6 +6,8 @@ import { RecipeService } from '../recipe.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { LoadingPageComponent } from '../loading-page/loading-page.component';
 import { CommonModule } from '@angular/common';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-home-page',
@@ -26,6 +28,7 @@ export class HomePageComponent {
 
   constructor(
     private recipesService: RecipeService,
+    private router: Router,
     private spinner: NgxSpinnerService
   ) {
     this.recipesService.getRecipes();
@@ -33,6 +36,16 @@ export class HomePageComponent {
 
   ngOnInit() {
     this.fetchRecipes();
+
+    this.router.events
+      .pipe(
+        filter(
+          (event) => event instanceof NavigationEnd && this.router.url === '/'
+        )
+      )
+      .subscribe(() => {
+        this.fetchRecipes();
+      });
   }
 
   private fetchRecipes(): void {
